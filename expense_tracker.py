@@ -33,7 +33,7 @@ def load_expenses(filepath: str) -> List[Dict[str, Any]]:
             return []
         return data
     except (json.JSONDecodeError, OSError):
-        # Corrupted file or read error: start fresh (could also back up the file)
+        
         return []
 
 
@@ -128,11 +128,11 @@ def matches_filters(
     end: Optional[date],
 ) -> bool:
     """Return True if an expense matches the chosen filters."""
-    # Category filter
+    
     if category is not None and item.get("category") != category:
         return False
 
-    # Date filter
+
     item_date = parse_date(str(item.get("date", "")))
     if item_date is None:
         return False
@@ -157,7 +157,7 @@ def list_expenses(expenses: List[Dict[str, Any]]) -> None:
 
     filtered = [e for e in expenses if matches_filters(e, category, start, end)]
 
-    # Sort by date (newest first), then by id
+
     def sort_key(e: Dict[str, Any]):
         d = parse_date(str(e.get("date", ""))) or date.min
         return (d, e.get("id", 0))
@@ -209,7 +209,7 @@ def summarize(expenses: List[Dict[str, Any]]) -> None:
         print("No category totals available.")
         return
 
-    # Show categories sorted by spending descending
+   
     sorted_cats = sorted(by_category.items(), key=lambda x: x[1], reverse=True)
     print("\nBy category:")
     for cat, amt in sorted_cats:
